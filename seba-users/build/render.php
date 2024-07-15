@@ -17,7 +17,7 @@ $clientes = new WP_Query(
 );
 
 // $attributes (array): The block attributes.
-// print_r($attributes);
+print_r($attributes);
 // $content (string): The block default content.
 // print_r($content);
 // $block (WP_Block): The block instance.
