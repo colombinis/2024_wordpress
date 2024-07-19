@@ -34,7 +34,6 @@ import { createRoot } from 'react-dom';
 import {Client} from './components/client';
 
 const element =document.getElementById( 'my-clients-component' );
-
 const order = element.getAttribute( 'data-order' );
 const posts_per_page = element.getAttribute( 'data-perpage' );
 
@@ -43,7 +42,7 @@ window.addEventListener(
     'load',
     function () {
         root.render(
-			<Client order={order} posts_per_page={posts_per_page} />,
+			<Client data={{order, posts_per_page}} />,
         );
     },
     false

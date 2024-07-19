@@ -1,3 +1,5 @@
+import {Panel,PanelBody,PanelRow, SelectControl} from '@wordpress/components';
+
 /**
  * Retrieves the translation of text.
  *
@@ -12,7 +14,7 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import {Panel,PanelBody,PanelRow, SelectControl} from '@wordpress/components';
+
 
 
 /**
@@ -47,7 +49,10 @@ export default function Edit({ attributes, setAttributes }) {
 									{label: 'ASC', value: 'ASC'},
 									{label: 'DESC', value: 'DESC'}
 								]}
-								onChange={order => setAttributes({order})}
+								onChange={(order) => {
+										setAttributes({order})
+									}
+								}
 							>
 							</SelectControl>
 						</PanelRow>
@@ -62,7 +67,6 @@ export default function Edit({ attributes, setAttributes }) {
 								]}
 								onChange={
 									(posts_per_page) => {
-										debugger
 										setAttributes({posts_per_page})
 									}
 								}
@@ -76,7 +80,7 @@ export default function Edit({ attributes, setAttributes }) {
 			</InspectorControls>
 
 		<div data-wrapper="from-editor" { ...useBlockProps() }>
-			<Client order={attributes.order} posts_per_page={attributes.posts_per_page} />
+			<Client data={attributes} />
 		</div>
 		</>
 	);

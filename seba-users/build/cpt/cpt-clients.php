@@ -89,8 +89,6 @@ class cpt_clients
 		);
 	}
 
-
-
 	function register_meta_box() {
 		add_meta_box( self::SLUG.'-meta-box-id', esc_html__( 'Client data', 'text-domain' ), [__CLASS__,'meta_box_callback'], self::SLUG );
 	}
@@ -101,7 +99,7 @@ class cpt_clients
 
 		$nombre = get_post_meta($object->ID, "nombre", true);
 		$apellido = get_post_meta($object->ID, "apellido", true);
-		$provincia_id = get_post_meta($object->ID, "provincia", true);
+		$provincia_data = get_post_meta($object->ID, "provincia", true);
 
 		wp_nonce_field(basename(__FILE__), "meta-box-nonce");
 		?>
@@ -116,9 +114,10 @@ class cpt_clients
 				<label for="provincia">Provincia</label>
 				<select name="provincia">
 					<?php foreach($provincias as $provincia): ?>
+					<?php $key = $provincia['id'].'|'.$provincia['nombre']; ?>
 						<option
-							<?php echo ($provincia['ID'] == $provincia_id) ? 'selected':''; ?>
-							value="<?php echo $provincia['ID']; ?>">
+							<?= ($key == $provincia_data) ? 'selected':''; ?>
+							value="<?= $key; ?>">
 							<?php echo $provincia['nombre']; ?>
 						</option>
 					<?php endforeach; ?>
@@ -157,17 +156,18 @@ class cpt_clients
 	}
 
 	public function getProvincias(){
-		// $response = wp_remote_get( 'https://www.argentina.gob.ar/datos-abiertos/georef/openapi#/Recursos/get_provincias' );
-		// $body     = wp_remote_retrieve_body( $response );
-		//@TODO:
-		// use wp_remote_get function to fetch and end point from an external service
-		// and use cache to improve performance with wp_cache_get/wp_cache_add
+		$key = self::SLUG.'_provincias';
+		$data = wp_cache_get( $key );
 
-		return [
-			["ID" => 1,"nombre" => "Provincia 1"],
-			["ID" => 2,"nombre" => "Provincia 2"],
-			["ID" => 3,"nombre" => "Provincia 3"],
-		];
+		if ( !$data ) {
+			//@TODO: move to a service class
+			$response = wp_remote_get( 'https://apis.datos.gob.ar/georef/api/provincias?orden=nombre&aplanar=true&campos=estandar&max=1000&inicio=0&exacto=true' );
+			$body     = json_decode(wp_remote_retrieve_body( $response ),true);
+			$data = $body['provincias'];
+			wp_cache_set( $key, $data );
+		}
+
+		return $data;
 	}
 }
 
