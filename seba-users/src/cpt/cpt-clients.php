@@ -21,7 +21,7 @@ class cpt_clients
 		add_action("save_post_".self::SLUG, [__CLASS__,"save_custom_meta_box"],10,3);
 	}
 
-	public function registerCpTypeClients()
+	public static function registerCpTypeClients()
 	{
 		register_post_type(
 			self::SLUG,
@@ -89,7 +89,7 @@ class cpt_clients
 		);
 	}
 
-	function register_meta_box() {
+	public static function register_meta_box() {
 		add_meta_box( self::SLUG.'-meta-box-id', esc_html__( 'Client data', 'text-domain' ), [__CLASS__,'meta_box_callback'], self::SLUG );
 	}
 
@@ -127,7 +127,7 @@ class cpt_clients
 		<?php
 	}
 
-	function save_custom_meta_box($post_id, $post, $update)
+	public static function save_custom_meta_box($post_id, $post, $update)
 	{
 		if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
 			return $post_id;

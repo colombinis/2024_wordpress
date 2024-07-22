@@ -5,14 +5,15 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-seba-seba-users {
+.client-list {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: repeat(auto-fit,minmax(min(100%,200px),1fr));
+
 	li{
+		border:1px dashed grey;
 		list-style-type: none;
-		a{
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			gap: var(--wp-style--block-gap)
-		}
+		padding: 10px;
+		overflow: hidden;
 	}
 }

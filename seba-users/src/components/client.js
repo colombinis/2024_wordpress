@@ -1,3 +1,12 @@
+import {
+	Card,
+	CardHeader,
+	CardBody,
+	CardFooter,
+	__experimentalText as Text,
+	__experimentalHeading as Heading,
+} from "@wordpress/components";
+
 import apiFetch from "@wordpress/api-fetch";
 import { addQueryArgs } from "@wordpress/url";
 import { useEffect, useState } from "@wordpress/element";
@@ -22,7 +31,7 @@ export const Client = (props) => {
 			});
 
 			if (!clientes) {
-				// oups! something went wrong
+				//@TODO: add some message to the user / log ?
 				return;
 			}
 			setclientes(clientes);
@@ -32,16 +41,26 @@ export const Client = (props) => {
 	}, [props]);
 
 	return (
-		<div>
-			<h1>Clientes</h1>
-			<ul>
-				{clientes?.map((client) => (
-					<li key={client.id}>
-						{client.meta.nombre} - {client.meta.apellido} --{" "}
-						{getProvinciaText(client.meta.provincia)}{" "}
-					</li>
-				))}
-			</ul>
-		</div>
+		<ul className="client-list">
+			{clientes?.map((client) => (
+				<li key={client.id}>
+					<strong>Nombre:</strong>{client.meta.nombre}<br/>
+					<strong>Apellido:</strong>{client.meta.apellido}<br/>
+					<strong>Provincia:</strong>{getProvinciaText(client.meta.provincia)}
+					<Card>
+						<CardHeader>
+							<Heading level={ 4 }>{client.meta.apellido}</Heading>
+						</CardHeader>
+						<CardBody>
+							<Text>{client.meta.nombre}</Text>
+						</CardBody>
+						<CardFooter>
+							<Text>{getProvinciaText(client.meta.provincia)}</Text>
+						</CardFooter>
+					</Card>
+				</li>
+			))}
+		</ul>
+
 	);
 };

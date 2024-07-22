@@ -4,11 +4,16 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-seba-seba-users {
+.client-list {
+	border:1px dashed blue;
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: repeat(auto-fit,minmax(min(100%,200px),1fr));
 
 	li{
-		a{
-			text-transform: uppercase;
-		}
+		border:1px dashed grey;
+		list-style-type: none;
+		padding: 10px;
+		overflow: hidden;
 	}
 }
