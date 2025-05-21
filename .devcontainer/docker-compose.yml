@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  app:
+    image: wordpress:latest # Using latest, can be pinned to a specific version if needed
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: password123 # Changed for clarity, ensure it matches db service
+      WORDPRESS_DB_NAME: wordpress_db
+      # WP_HOME and WP_SITEURL will be set by setup.sh
+    volumes:
+      - ..:/workspace:cached # Mounts the entire repository root to /workspace
+      - ../:/var/www/html # Mounts the repository root as the web server root.
+                          # This assumes wp-content, wp-config.php etc. are at the repo root
+                          # or will be correctly placed by the WordPress installation.
+    depends_on:
+      - db
+    # user: "vscode" # Optional: if issues arise with permissions, can set user
+
+  db:
+    image: mysql:8.0 # Matching the existing root docker-compose.yml
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123 # Changed for clarity
+      MYSQL_DATABASE: wordpress_db
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: password123 # Must match WORDPRESS_DB_PASSWORD in 'app' service
+    volumes:
+      - devcontainer_db_data:/var/lib/mysql
+    ports: # Exposing port 3306 only within Docker network by default, not to host
+      - "3306" 
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    ports:
+      - "8088:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root # Using root for phpMyAdmin to manage all DBs
+      PMA_PASSWORD: rootpassword123 # Must match MYSQL_ROOT_PASSWORD in 'db' service
+      UPLOAD_LIMIT: 1G # Optional: Increase upload limit
+    depends_on:
+      - db
+
+volumes:
+  devcontainer_db_data: # Named volume for db persistence within the devcontainer context

@@ -1,0 +1,16 @@
+👋 Welcome to WordPress Development for colombinis/2024_wordpress in Codespaces!
+
+🛠️  Your environment is being set up. Please wait for the "postCreateCommand" (setup.sh) to finish.
+    This involves:
+    - Installing Node.js dependencies for the 'seba-users' plugin.
+    - Building the 'seba-users' plugin.
+    - Installing WordPress core.
+    - Activating the 'seba-users' plugin.
+
+🚀 Once setup is complete:
+    - Your WordPress site will be available at the automatically forwarded port 8080.
+      Look for a URL like https://<your-codespace-name>-8080.<forwarding-domain>.
+    - phpMyAdmin will be available at port 8088.
+    - WordPress admin: /wp-admin (user: admin, pass: password)
+
+Happy developing!
